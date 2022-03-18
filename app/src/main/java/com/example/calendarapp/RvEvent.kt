@@ -1,15 +1,11 @@
 package com.example.calendarapp
 
-import android.content.Context
-
-class RvEvent(val name: String, val timeStart: String, val timeEnd: String) {
+class RvEvent(val id: Int, val name: String, val timeStart: String, val timeEnd: String) {
     companion object {
-        fun createEventsList(context: Context): ArrayList<RvEvent> {
+        fun createEventsList(data: List<EventData>): ArrayList<RvEvent> {
             val events = ArrayList<RvEvent>()
-            val dh = DataHandler()
-            val data = dh.read(context)
             for (e in data) {
-                events.add(RvEvent(e.name, e.timeStart, e.timeEnd))
+                events.add(RvEvent(e.id, e.name, e.timeStart, e.timeEnd))
             }
             return events
         }

@@ -6,15 +6,23 @@ import com.google.gson.reflect.TypeToken
 import java.io.File
 import java.io.FileWriter
 import java.lang.Exception
+import kotlin.math.max
 
 class DataHandler {
-    fun write(event: EventData, context: Context) {
-        val savedData = this.read(context)
-        val newData = savedData + event
-        val gson = Gson()
-        val jsonString = gson.toJson(newData)
 
-        val dir = File(context.filesDir, "calendarApp")
+    fun lastId(context: Context?): Int {
+        val fullData = read(context)
+        var maxId = -1
+        fullData.forEach { x ->
+            maxId = max(maxId, x.id)
+        }
+        return maxId
+    }
+
+    fun write(data: List<EventData>, context: Context?) {
+        val gson = Gson()
+        val jsonString = gson.toJson(data)
+        val dir = File(context?.filesDir, "calendarApp")
         if (!dir.exists()) {
             dir.mkdir()
         }
@@ -29,9 +37,15 @@ class DataHandler {
         }
     }
 
-    fun read(context: Context): List<EventData> {
+    fun append(event: EventData, context: Context?) {
+        val savedData = this.read(context)
+        val newData = savedData + event
+        write(newData, context)
+    }
+
+    fun read(context: Context?): List<EventData> {
         try {
-            val dir = File(context.filesDir, "calendarApp")
+            val dir = File(context?.filesDir, "calendarApp")
             val file = File(dir, "EventData.txt")
             val reader = file.bufferedReader()
             val json = reader.use { it.readText() }
@@ -40,14 +54,30 @@ class DataHandler {
             return gson.fromJson(json, typeToken)
         } catch (e: Exception) {
             // TODO
-            return emptyList<EventData>()
         }
+        return listOf<EventData>()
+    }
+
+    fun removeEvent(context: Context?, eventId: Int) {
+        var eventData = read(context)
+        if (eventData.isEmpty()) {
+            return
+        }
+        val newEventData = eventData.filter { x -> x.id != eventId }
+        write(newEventData, context)
+    }
+
+    fun readDate(context: Context?, date: String): List<EventData> {
+        val fullData = this.read(context)
+        return fullData.filter { x -> x.date == date }
     }
 }
 
 data class EventData(
+    val id: Int,
     val name: String,
     val info: String,
     val timeStart: String,
     val timeEnd: String,
+    val date: String,
 )
