@@ -15,6 +15,7 @@ class RvAdapter(private val mEvents: ArrayList<RvEvent>) :
         val tvStartTime: TextView = itemView.findViewById(R.id.sEvent_tv_startTime)
         val tvEndTime: TextView = itemView.findViewById(R.id.sEvent_tv_endTime)
         val btnRemove: Button = itemView.findViewById(R.id.sEvent_btn_remove)
+        val view = itemView
     }
 
     override fun onCreateViewHolder(
@@ -34,6 +35,12 @@ class RvAdapter(private val mEvents: ArrayList<RvEvent>) :
             val dh = DataHandler()
             dh.removeEvent(it.context, event.id)
             notifyDataSetChanged()
+        }
+        holder.view.setOnLongClickListener {
+            val activity = it.context as MainActivity
+            val eventData = DataHandler().readEvent(activity, event.id)
+            activity.navigateToForm(eventData)
+            true
         }
         holder.tvName.text = event.name
         holder.tvStartTime.text = event.startTime

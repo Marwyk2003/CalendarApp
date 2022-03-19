@@ -4,18 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/listFragment">
-
-
+    
     <fragment
         android:id="@+id/dayFragment"
         android:name="com.example.calendarapp.DayFragment"
         android:label="fragment_day"
-        tools:layout="@layout/fragment_day" />
+        tools:layout="@layout/fragment_day">
+        <action
+            android:id="@+id/action_dayFragment_to_formFragment"
+            app:destination="@id/formFragment" />
+    </fragment>
     <fragment
         android:id="@+id/listFragment"
         android:name="com.example.calendarapp.ListFragment"
         android:label="fragment_list"
-        tools:layout="@layout/fragment_list" >
+        tools:layout="@layout/fragment_list">
         <action
             android:id="@+id/action_listFragment_to_formFragment"
             app:destination="@id/formFragment" />
@@ -24,9 +27,14 @@
         android:id="@+id/formFragment"
         android:name="com.example.calendarapp.FormFragment"
         android:label="fragment_form"
-        tools:layout="@layout/fragment_form" >
+        tools:layout="@layout/fragment_form">
         <action
             android:id="@+id/action_formFragment_to_listFragment"
             app:destination="@id/listFragment" />
+        <argument
+            android:name="eventData"
+            android:defaultValue="@null"
+            app:argType="com.example.calendarapp.EventData"
+            app:nullable="true" />
     </fragment>
 </navigation>

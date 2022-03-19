@@ -1,12 +1,15 @@
 package com.example.calendarapp
 
 import android.content.Context
+import android.os.Parcelable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.parcelize.Parcelize
 import java.io.File
 import java.io.FileWriter
 import java.lang.Exception
 import kotlin.math.max
+import java.io.Serializable
 
 class DataHandler {
 
@@ -37,7 +40,7 @@ class DataHandler {
         }
     }
 
-    fun append(event: EventData, context: Context?) {
+    fun append(context: Context?, event: EventData) {
         val savedData = this.read(context)
         val newData = savedData + event
         write(newData, context)
@@ -58,6 +61,11 @@ class DataHandler {
         return listOf()
     }
 
+    fun readEvent(context: Context?, eventId: Int): EventData {
+        val fullData = this.read(context)
+        return fullData.first { x -> x.id == eventId }
+    }
+
     fun removeEvent(context: Context?, eventId: Int) {
         val eventData = read(context)
         if (eventData.isEmpty()) {
@@ -71,8 +79,18 @@ class DataHandler {
         val fullData = this.read(context)
         return fullData.filter { x -> x.date == date }
     }
+
+    fun editEvent(context: Context?, event: EventData) {
+        val fullData = read(context) as MutableList
+        if (fullData.isEmpty()) {
+            return
+        }
+        val newEventData = fullData.map { x -> if (x.id == event.id) event else x }
+        write(newEventData, context)
+    }
 }
 
+@Parcelize
 data class EventData(
     val id: Int,
     val name: String,
@@ -80,4 +98,4 @@ data class EventData(
     val startTime: String,
     val endTime: String,
     val date: String,
-)
+) : Parcelable

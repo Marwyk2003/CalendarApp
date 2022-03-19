@@ -32,6 +32,18 @@ class FormFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
+    private fun initializeEditText(view: View) {
+        val bundle = arguments ?: return
+        val args = FormFragmentArgs.fromBundle(bundle)
+        val eventData = args.eventData
+
+        view.findViewById<EditText>(R.id.form_et_name)?.setText(eventData?.name)
+        view.findViewById<EditText>(R.id.form_et_desc)?.setText(eventData?.desc)
+        view.findViewById<EditText>(R.id.form_et_startTime)?.setText(eventData?.startTime)
+        view.findViewById<EditText>(R.id.form_et_endTime)?.setText(eventData?.endTime)
+        view.findViewById<EditText>(R.id.form_et_date)?.setText(eventData?.date)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,7 +53,8 @@ class FormFragment : Fragment() {
         val etDate = view.findViewById<EditText>(R.id.form_et_date)
         val today = Calendar.getInstance().time
         val sdf = SimpleDateFormat("yyyy.MM.dd")
-        etDate.setText(sdf.format(today))
+        etDate.hint = sdf.format(today)
+        initializeEditText(view)
         return view
     }
 
@@ -55,7 +68,7 @@ class FormFragment : Fragment() {
                 val curView = view
                 if (curView != null) {
                     save(curView)
-                    findNavController().navigate(R.id.action_formFragment_to_listFragment)
+                    findNavController().navigateUp()
                 }
                 true
             }
@@ -64,16 +77,24 @@ class FormFragment : Fragment() {
     }
 
     private fun save(view: View) {
+        val bundle = arguments ?: return
+        val args = FormFragmentArgs.fromBundle(bundle)
+        val eventId = args.eventData?.id
+
         val name = view.findViewById<EditText>(R.id.form_et_name).text.toString()
         val desc = view.findViewById<EditText>(R.id.form_et_desc).text.toString()
         val startTime = view.findViewById<EditText>(R.id.form_et_startTime).text.toString()
         val endTime = view.findViewById<EditText>(R.id.form_et_endTime).text.toString()
         val date = view.findViewById<EditText>(R.id.form_et_date).text.toString()
         val dh = DataHandler()
-        val id = dh.lastId(context) + 1
+        val id = eventId ?: dh.lastId(context) + 1
         val ed = EventData(id, name, desc, startTime, endTime, date)
 
-        dh.append(ed, view.context)
+        if (eventId == null) {
+            dh.append(view.context, ed)
+        } else {
+            dh.editEvent(view.context, ed)
+        }
     }
 
     companion object {

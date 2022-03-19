@@ -2,6 +2,7 @@ package com.example.calendarapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -35,5 +36,11 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.main_fragment)
         return navController.navigateUp()
+    }
+
+    fun navigateToForm(eventData: EventData) {
+        val bundle = bundleOf("eventData" to eventData)
+        val navController = findNavController(R.id.main_fragment)
+        navController.navigate(R.id.formFragment, bundle)
     }
 }
