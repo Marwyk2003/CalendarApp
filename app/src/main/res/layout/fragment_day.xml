@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,8 +11,50 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/day_tl_week"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:tabTextAppearance="@style/TabLayoutWeek">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mon" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tue" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wed" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thu" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fri" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sat" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sun" />
+        </com.google.android.material.tabs.TabLayout>
+
         <TextView
-            android:id="@+id/tv_date"
+            android:id="@+id/day_tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -23,7 +66,7 @@
             android:layout_height="wrap_content">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_today"
+                android:id="@+id/day_rv_events"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </ScrollView>

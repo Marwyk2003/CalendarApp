@@ -1,13 +1,19 @@
 package com.example.calendarapp
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,13 +47,34 @@ class DayFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_day, container, false)
 
-        val rvEvents = view.findViewById<RecyclerView>(R.id.rv_today)
-        val today = Calendar.getInstance().time
+        val tlWeek = view.findViewById<TabLayout>(R.id.day_tl_week)
+        val tvDate = view.findViewById<TextView>(R.id.day_tv_date)
+        val rvEvents = view.findViewById<RecyclerView>(R.id.day_rv_events)
+
+        val calendar = Calendar.getInstance()
+        val dayOfWeek = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
         val sdf = SimpleDateFormat("yyyy.MM.dd")
-        val data = DataHandler().readDate(context, sdf.format(today))
-        events = RvEvent.createEventsList(data)
-        val adapter = RvAdapter(events)
-        rvEvents.adapter = adapter
+
+        tlWeek.addOnTabSelectedListener(object : OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                val cal = calendar.clone() as Calendar
+                val dateDif = tab.position - dayOfWeek
+                cal.add(Calendar.DATE, dateDif)
+                val curDate = sdf.format(cal.time)
+                tvDate.text = curDate
+
+                val data = DataHandler().readDate(context, curDate)
+                events = RvEvent.createEventsList(data)
+                val adapter = RvAdapter(events)
+                rvEvents.adapter = adapter
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+        tlWeek.getTabAt(dayOfWeek)?.select()
+
         rvEvents.layoutManager = LinearLayoutManager(container?.context)
         return view
     }

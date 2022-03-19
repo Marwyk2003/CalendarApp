@@ -15,14 +15,14 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rwEvents"
+                android:id="@+id/list_rv_events"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnNewEvent"
+        android:id="@+id/list_btn_newEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"

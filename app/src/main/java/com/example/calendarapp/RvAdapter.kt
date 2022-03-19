@@ -11,10 +11,10 @@ class RvAdapter(private val mEvents: ArrayList<RvEvent>) :
     RecyclerView.Adapter<RvAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
-        val startTimeTextView: TextView = itemView.findViewById(R.id.startTimeTextView)
-        val endTimeTextView: TextView = itemView.findViewById(R.id.endTimeTextView)
-        val btnRemove: Button = itemView.findViewById(R.id.btn_remove)
+        val tvName: TextView = itemView.findViewById(R.id.sEvent_tv_name)
+        val tvStartTime: TextView = itemView.findViewById(R.id.sEvent_tv_startTime)
+        val tvEndTime: TextView = itemView.findViewById(R.id.sEvent_tv_endTime)
+        val btnRemove: Button = itemView.findViewById(R.id.sEvent_btn_remove)
     }
 
     override fun onCreateViewHolder(
@@ -35,9 +35,9 @@ class RvAdapter(private val mEvents: ArrayList<RvEvent>) :
             dh.removeEvent(it.context, event.id)
             notifyDataSetChanged()
         }
-        holder.nameTextView.text = event.name
-        holder.startTimeTextView.text = event.timeStart
-        holder.endTimeTextView.text = event.timeEnd
+        holder.tvName.text = event.name
+        holder.tvStartTime.text = event.startTime
+        holder.tvEndTime.text = event.endTime
     }
 
     override fun getItemCount(): Int {

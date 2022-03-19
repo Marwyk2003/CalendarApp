@@ -24,7 +24,7 @@ class ListFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    lateinit var events: ArrayList<RvEvent>
+    private lateinit var events: ArrayList<RvEvent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,15 +41,15 @@ class ListFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
-        val rvEvents = view.findViewById<RecyclerView>(R.id.rwEvents)
+        val rvEvents = view.findViewById<RecyclerView>(R.id.list_rv_events)
         val data = DataHandler().read(context)
         events = RvEvent.createEventsList(data)
         val adapter = RvAdapter(events)
         rvEvents.adapter = adapter
         rvEvents.layoutManager = LinearLayoutManager(container?.context)
 
-        val btnEdit = view.findViewById<FloatingActionButton>(R.id.btnNewEvent)
-        btnEdit.setOnClickListener {
+        val btnNewEvent = view.findViewById<FloatingActionButton>(R.id.list_btn_newEvent)
+        btnNewEvent.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_formFragment)
         }
         return view

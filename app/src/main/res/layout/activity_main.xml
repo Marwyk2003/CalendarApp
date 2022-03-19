@@ -8,18 +8,18 @@
     tools:context="com.example.calendarapp.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_main"
+        android:id="@+id/main_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@id/bottom_nav"
+        app:layout_constraintBottom_toTopOf="@id/main_bottomNav"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_graph"
         tools:layout="@layout/fragment_list" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
+        android:id="@+id/main_bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

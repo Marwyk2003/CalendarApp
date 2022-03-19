@@ -15,13 +15,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val navHost = supportFragmentManager.findFragmentById(R.id.fragment_main) as NavHostFragment
+        val navHost = supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment
         val appBarConfig = AppBarConfiguration(setOf(R.id.listFragment, R.id.dayFragment))
-        val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        val bottomNavView = findViewById<BottomNavigationView>(R.id.main_bottomNav)
 
         bottomNavView.setupWithNavController(navHost.navController)
         bottomNavView.setOnItemSelectedListener { item ->
-            val navController = findNavController(R.id.fragment_main)
+            val navController = findNavController(R.id.main_fragment)
             when (item.itemId) {
                 R.id.listFragment -> navController.navigate(R.id.listFragment)
                 R.id.dayFragment -> navController.navigate(R.id.dayFragment)
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.fragment_main)
+        val navController = findNavController(R.id.main_fragment)
         return navController.navigateUp()
     }
 }

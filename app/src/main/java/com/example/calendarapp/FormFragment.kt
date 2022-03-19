@@ -38,7 +38,7 @@ class FormFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_form, container, false)
-        val etDate = view.findViewById<EditText>(R.id.editTextDate)
+        val etDate = view.findViewById<EditText>(R.id.form_et_date)
         val today = Calendar.getInstance().time
         val sdf = SimpleDateFormat("yyyy.MM.dd")
         etDate.setText(sdf.format(today))
@@ -64,14 +64,14 @@ class FormFragment : Fragment() {
     }
 
     private fun save(view: View) {
-        val name = view.findViewById<EditText>(R.id.editTextName).text.toString()
-        val info = view.findViewById<EditText>(R.id.editTextInfo).text.toString()
-        val timeStart = view.findViewById<EditText>(R.id.editTextStartTime).text.toString()
-        val timeEnd = view.findViewById<EditText>(R.id.editTextEndTime).text.toString()
-        val date = view.findViewById<EditText>(R.id.editTextDate).text.toString()
+        val name = view.findViewById<EditText>(R.id.form_et_name).text.toString()
+        val desc = view.findViewById<EditText>(R.id.form_et_desc).text.toString()
+        val startTime = view.findViewById<EditText>(R.id.form_et_startTime).text.toString()
+        val endTime = view.findViewById<EditText>(R.id.form_et_endTime).text.toString()
+        val date = view.findViewById<EditText>(R.id.form_et_date).text.toString()
         val dh = DataHandler()
-        val id = dh.lastId(context) + 1;
-        val ed = EventData(id, name, info, timeStart, timeEnd, date)
+        val id = dh.lastId(context) + 1
+        val ed = EventData(id, name, desc, startTime, endTime, date)
 
         dh.append(ed, view.context)
     }

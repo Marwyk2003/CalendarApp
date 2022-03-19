@@ -19,7 +19,7 @@ class DataHandler {
         return maxId
     }
 
-    fun write(data: List<EventData>, context: Context?) {
+    private fun write(data: List<EventData>, context: Context?) {
         val gson = Gson()
         val jsonString = gson.toJson(data)
         val dir = File(context?.filesDir, "calendarApp")
@@ -55,11 +55,11 @@ class DataHandler {
         } catch (e: Exception) {
             // TODO
         }
-        return listOf<EventData>()
+        return listOf()
     }
 
     fun removeEvent(context: Context?, eventId: Int) {
-        var eventData = read(context)
+        val eventData = read(context)
         if (eventData.isEmpty()) {
             return
         }
@@ -76,8 +76,8 @@ class DataHandler {
 data class EventData(
     val id: Int,
     val name: String,
-    val info: String,
-    val timeStart: String,
-    val timeEnd: String,
+    val desc: String,
+    val startTime: String,
+    val endTime: String,
     val date: String,
 )

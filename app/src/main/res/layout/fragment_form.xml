@@ -13,7 +13,7 @@
         android:paddingVertical="8dp">
 
         <EditText
-            android:id="@+id/editTextName"
+            android:id="@+id/form_et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -22,7 +22,7 @@
             android:minHeight="48dp" />
 
         <EditText
-            android:id="@+id/editTextInfo"
+            android:id="@+id/form_et_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -37,7 +37,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editTextStartTime"
+                android:id="@+id/form_et_startTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -46,7 +46,7 @@
                 android:inputType="time" />
 
             <EditText
-                android:id="@+id/editTextEndTime"
+                android:id="@+id/form_et_endTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -57,7 +57,7 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/editTextDate"
+            android:id="@+id/form_et_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
