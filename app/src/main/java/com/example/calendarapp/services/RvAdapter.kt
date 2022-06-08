@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.calendarapp.ui.MainActivity
 
 class RvAdapter(private val mEvents: ArrayList<RvEvent>) :
     RecyclerView.Adapter<RvAdapter.ViewHolder>() {
