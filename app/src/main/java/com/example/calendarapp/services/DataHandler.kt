@@ -2,6 +2,7 @@ package com.example.calendarapp
 
 import android.content.Context
 import android.os.Parcelable
+import com.example.calendarapp.models.EventData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.parcelize.Parcelize
@@ -75,9 +76,9 @@ class DataHandler {
         write(newEventData, context)
     }
 
-    fun readDate(context: Context?, date: String): List<EventData> {
+    fun readDate(context: Context?, date: String?): List<EventData> {
         val fullData = this.read(context)
-        return fullData.filter { x -> x.date == date }
+        return if (date == null) fullData else fullData.filter { x -> x.date == date }
     }
 
     fun editEvent(context: Context?, event: EventData) {
@@ -89,13 +90,3 @@ class DataHandler {
         write(newEventData, context)
     }
 }
-
-@Parcelize
-data class EventData(
-    val id: Int,
-    val name: String,
-    val desc: String,
-    val startTime: String,
-    val endTime: String,
-    val date: String,
-) : Parcelable

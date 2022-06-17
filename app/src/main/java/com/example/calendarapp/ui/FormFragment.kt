@@ -1,61 +1,60 @@
-package com.example.calendarapp
+package com.example.calendarapp.ui
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.widget.EditText
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import java.text.SimpleDateFormat
-import java.util.*
+import com.example.calendarapp.DataHandler
+import com.example.calendarapp.R
+import com.example.calendarapp.databinding.FragmentFormBinding
+import com.example.calendarapp.models.EventData
+import com.example.calendarapp.viewmodels.FormViewModel
 
 // TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FormFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FormFragment : Fragment() {
+    private lateinit var binding: FragmentFormBinding
+    private val model: FormViewModel by viewModels()
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = FragmentFormBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = this
+        binding.viewmodel = model
+
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
         setHasOptionsMenu(true)
+        initializeForm()
     }
 
-    private fun initializeEditText(view: View) {
+    private fun initializeForm() {
+        model.dateHint.value = model.currentDate()
         val bundle = arguments ?: return
         val args = FormFragmentArgs.fromBundle(bundle)
         val eventData = args.eventData
 
-        view.findViewById<EditText>(R.id.form_et_name)?.setText(eventData?.name)
-        view.findViewById<EditText>(R.id.form_et_desc)?.setText(eventData?.desc)
-        view.findViewById<EditText>(R.id.form_et_startTime)?.setText(eventData?.startTime)
-        view.findViewById<EditText>(R.id.form_et_endTime)?.setText(eventData?.endTime)
-        view.findViewById<EditText>(R.id.form_et_date)?.setText(eventData?.date)
+        model.name.value = eventData?.name
+        model.desc.value = eventData?.desc
+        model.timeStart.value = eventData?.startTime
+        model.timeEnd.value = eventData?.endTime
+        model.date.value = eventData?.date
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_form, container, false)
-        val etDate = view.findViewById<EditText>(R.id.form_et_date)
-        val today = Calendar.getInstance().time
-        val sdf = SimpleDateFormat("yyyy.MM.dd")
-        etDate.hint = sdf.format(today)
-        initializeEditText(view)
-        return view
+    ): View {
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -81,15 +80,16 @@ class FormFragment : Fragment() {
         val args = FormFragmentArgs.fromBundle(bundle)
         val eventId = args.eventData?.id
 
-        val name = view.findViewById<EditText>(R.id.form_et_name).text.toString()
-        val desc = view.findViewById<EditText>(R.id.form_et_desc).text.toString()
-        val startTime = view.findViewById<EditText>(R.id.form_et_startTime).text.toString()
-        val endTime = view.findViewById<EditText>(R.id.form_et_endTime).text.toString()
-        val date = view.findViewById<EditText>(R.id.form_et_date).text.toString()
         val dh = DataHandler()
-        val id = eventId ?: dh.lastId(context) + 1
-        val ed = EventData(id, name, desc, startTime, endTime, date)
-
+        val id = eventId ?: (dh.lastId(context) + 1)
+        val ed = EventData(
+            id,
+            model.name.value ?: "",
+            model.desc.value ?: "",
+            model.timeStart.value ?: "",
+            model.timeEnd.value ?: "",
+            model.date.value ?: ""
+        )
         if (eventId == null) {
             dh.append(view.context, ed)
         } else {
@@ -98,14 +98,6 @@ class FormFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FormFragment.
-         */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =

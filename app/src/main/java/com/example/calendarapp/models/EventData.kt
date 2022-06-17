@@ -1,4 +1,14 @@
 package com.example.calendarapp.models
 
-class EventData {
-}
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class EventData(
+    val id: Int,
+    val name: String,
+    val desc: String,
+    val startTime: String,
+    val endTime: String,
+    val date: String,
+) : Parcelable

@@ -1,4 +1,4 @@
-package com.example.calendarapp
+package com.example.calendarapp.models
 
 class RvEvent(val id: Int, val name: String, val startTime: String, val endTime: String) {
     companion object {

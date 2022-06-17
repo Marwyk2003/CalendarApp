@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.example.calendarapp.DataHandler
+import com.example.calendarapp.R
+import com.example.calendarapp.databinding.FragmentListBinding
+import com.example.calendarapp.models.RvEvent
+import com.example.calendarapp.services.RvAdapter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +24,8 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ListFragment : Fragment() {
+    private lateinit var binding: FragmentListBinding
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -28,6 +33,9 @@ class ListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = FragmentListBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = this
+
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -37,34 +45,23 @@ class ListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_list, container, false)
-
-        val rvEvents = view.findViewById<RecyclerView>(R.id.list_rv_events)
-        val data = DataHandler().read(context)
-        events = RvEvent.createEventsList(data)
-        val adapter = RvAdapter(events)
-        rvEvents.adapter = adapter
-        rvEvents.layoutManager = LinearLayoutManager(container?.context)
-
-        val btnNewEvent = view.findViewById<FloatingActionButton>(R.id.list_btn_newEvent)
-        btnNewEvent.setOnClickListener {
+    ): View {
+        val view = binding.root
+        initEventsList(null)
+        binding.listRvEvents.layoutManager = LinearLayoutManager(container?.context)
+        binding.listBtnNewEvent.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_formFragment)
         }
         return view
     }
 
+    public fun initEventsList(date: String?) {
+        val data = DataHandler().readDate(context, date)
+        events = RvEvent.createEventsList(data)
+        binding.listRvEvents.adapter = RvAdapter(events)
+    }
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             ListFragment().apply {

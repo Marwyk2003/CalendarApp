@@ -1,68 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".FormFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.example.calendarapp.viewmodels.FormViewModel" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp">
-
-        <EditText
-            android:id="@+id/form_et_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/name"
-            android:inputType="textPersonName"
-            android:minHeight="48dp" />
-
-        <EditText
-            android:id="@+id/form_et_desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="@string/description"
-            android:inputType="textMultiLine"
-            android:minHeight="48dp" />
+        android:layout_height="match_parent"
+        tools:context=".ui.FormFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
 
             <EditText
-                android:id="@+id/form_et_startTime"
-                android:layout_width="wrap_content"
+                android:id="@+id/form_et_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ems="10"
-                android:hint="@string/noon"
-                android:inputType="time" />
+                android:hint="@string/name"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:text="@={viewmodel.name}" />
 
             <EditText
-                android:id="@+id/form_et_endTime"
+                android:id="@+id/form_et_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/description"
+                android:inputType="textMultiLine"
+                android:minHeight="48dp"
+                android:text="@={viewmodel.desc}" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/form_et_startTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/noon"
+                    android:inputType="time"
+                    android:text="@={viewmodel.timeStart}" />
+
+                <EditText
+                    android:id="@+id/form_et_endTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/noon"
+                    android:inputType="time"
+                    android:text="@={viewmodel.timeEnd}" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/form_et_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ems="10"
-                android:hint="@string/noon"
-                android:inputType="time" />
+                android:hint="@{viewmodel.dateHint}"
+                android:inputType="date"
+                android:text="@={viewmodel.date}" />
 
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/form_et_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/date_hint"
-            android:inputType="date" />
-
-    </LinearLayout>
-</FrameLayout>
+    </FrameLayout>
+</layout>
