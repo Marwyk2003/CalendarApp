@@ -7,6 +7,7 @@ import java.util.*
 
 class DayViewModel : ViewModel() {
     var date = MutableLiveData<String>()
+    val eventGroupName = MutableLiveData<String>()
 
     fun changeDate(offset: Int) {
         val calendar = Calendar.getInstance()

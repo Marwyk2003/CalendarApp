@@ -3,38 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/listFragment">
-    
+    app:startDestination="@id/eventGroupFragment">
+
     <fragment
         android:id="@+id/dayFragment"
         android:name="com.example.calendarapp.ui.DayFragment"
         android:label="fragment_day"
         tools:layout="@layout/fragment_day">
-        <action
-            android:id="@+id/action_dayFragment_to_formFragment"
-            app:destination="@id/formFragment" />
+        <argument
+            android:name="eventGroupData"
+            android:defaultValue="@null"
+            app:argType="com.example.calendarapp.models.EventGroupData"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/listFragment"
         android:name="com.example.calendarapp.ui.ListFragment"
         android:label="fragment_list"
-        tools:layout="@layout/fragment_list">
-        <action
-            android:id="@+id/action_listFragment_to_formFragment"
-            app:destination="@id/formFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_list"/>
     <fragment
         android:id="@+id/formFragment"
         android:name="com.example.calendarapp.ui.FormFragment"
         android:label="fragment_form"
         tools:layout="@layout/fragment_form">
-        <action
-            android:id="@+id/action_formFragment_to_listFragment"
-            app:destination="@id/listFragment" />
         <argument
             android:name="eventData"
             android:defaultValue="@null"
             app:argType="com.example.calendarapp.models.EventData"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/eventGroupFragment"
+        android:name="com.example.calendarapp.ui.EventGroupFragment"
+        android:label="eventGroupFragment" />
 </navigation>

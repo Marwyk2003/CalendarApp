@@ -3,8 +3,6 @@ package com.example.calendarapp.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,7 +12,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.calendarapp.models.EventData
 import com.example.calendarapp.R
 import com.example.calendarapp.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -26,14 +23,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         val navHost = supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment
-        val appBarConfig = AppBarConfiguration(setOf(R.id.listFragment, R.id.dayFragment))
+        val appBarConfig = AppBarConfiguration(setOf(R.id.eventGroupFragment, R.id.dayFragment))
         val bottomNavView = binding.mainBottomNav
         val navController = navHost.navController
 
         bottomNavView.setupWithNavController(navController)
         bottomNavView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.listFragment -> navController.navigate(R.id.listFragment)
+                R.id.eventGroupFragment -> navController.navigate(R.id.eventGroupFragment)
                 R.id.dayFragment -> navController.navigate(R.id.dayFragment)
             }
             val temp = item.onNavDestinationSelected(navController)
@@ -47,9 +44,8 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp()
     }
 
-    fun navigateToForm(eventData: EventData) {
-        val bundle = bundleOf("eventData" to eventData)
+    fun navigate(destId: Int, bundle: Bundle? = null) {
         val navController = binding.mainFragment.findNavController()
-        navController.navigate(R.id.formFragment, bundle)
+        navController.navigate(destId, bundle)
     }
 }

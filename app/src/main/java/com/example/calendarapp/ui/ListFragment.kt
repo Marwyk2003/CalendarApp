@@ -5,41 +5,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.calendarapp.DataHandler
 import com.example.calendarapp.R
 import com.example.calendarapp.databinding.FragmentListBinding
+import com.example.calendarapp.models.EventData
 import com.example.calendarapp.models.RvEvent
-import com.example.calendarapp.services.RvAdapter
+import com.example.calendarapp.services.DataHandler
+import com.example.calendarapp.services.EventRvAdapter
+import com.example.calendarapp.viewmodels.EventViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
+    private lateinit var events: ArrayList<EventViewModel>
 
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private lateinit var events: ArrayList<RvEvent>
+    private var eventGroupName: String = "";
+    private var eventGroupImage: Int? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentListBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
-
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -47,28 +33,28 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view = binding.root
-        initEventsList(null)
+        initEventsList()
         binding.listRvEvents.layoutManager = LinearLayoutManager(container?.context)
         binding.listBtnNewEvent.setOnClickListener {
-            findNavController().navigate(R.id.action_listFragment_to_formFragment)
+            val activity = it.context as MainActivity
+            val data = EventData(null, "", "", "", "", "", eventGroupName, eventGroupImage)
+            val bundle = bundleOf("eventData" to data)
+            activity.navigate(R.id.formFragment, bundle)
         }
         return view
     }
 
-    public fun initEventsList(date: String?) {
-        val data = DataHandler().readDate(context, date)
-        events = RvEvent.createEventsList(data)
-        binding.listRvEvents.adapter = RvAdapter(events)
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    fun initEventsList(date: String? = null, egName: String? = null) {
+        val data = DataHandler().readFilter(context, date)
+        eventGroupName = egName ?: ""
+        eventGroupImage = this.resources.getIdentifier(
+            eventGroupName,
+            "drawable",
+            binding.root.context.packageName
+        )
+        val eData = RvEvent.createEventsList(data).map { it -> it.eData }
+        events =
+            eData.map { it -> EventViewModel().apply { init(it) } } as ArrayList<EventViewModel>
+        binding.listRvEvents.adapter = EventRvAdapter(events)
     }
 }

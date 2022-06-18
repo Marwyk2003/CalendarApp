@@ -1,24 +1,20 @@
-package com.example.calendarapp
+package com.example.calendarapp.services
 
 import android.content.Context
-import android.os.Parcelable
 import com.example.calendarapp.models.EventData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.parcelize.Parcelize
 import java.io.File
 import java.io.FileWriter
 import java.lang.Exception
 import kotlin.math.max
-import java.io.Serializable
 
 class DataHandler {
-
     fun lastId(context: Context?): Int {
         val fullData = read(context)
         var maxId = -1
         fullData.forEach { x ->
-            maxId = max(maxId, x.id)
+            maxId = max(maxId, x.id ?: -1)
         }
         return maxId
     }
@@ -47,7 +43,7 @@ class DataHandler {
         write(newData, context)
     }
 
-    fun read(context: Context?): List<EventData> {
+    private fun read(context: Context?): List<EventData> {
         try {
             val dir = File(context?.filesDir, "calendarApp")
             val file = File(dir, "EventData.txt")
@@ -62,11 +58,6 @@ class DataHandler {
         return listOf()
     }
 
-    fun readEvent(context: Context?, eventId: Int): EventData {
-        val fullData = this.read(context)
-        return fullData.first { x -> x.id == eventId }
-    }
-
     fun removeEvent(context: Context?, eventId: Int) {
         val eventData = read(context)
         if (eventData.isEmpty()) {
@@ -76,9 +67,15 @@ class DataHandler {
         write(newEventData, context)
     }
 
-    fun readDate(context: Context?, date: String?): List<EventData> {
+    fun readFilter(
+        context: Context?,
+        date: String? = null,
+        eventGroup: String? = null
+    ): List<EventData> {
         val fullData = this.read(context)
-        return if (date == null) fullData else fullData.filter { x -> x.date == date }
+        return fullData.filter { it ->
+            (date == null || it.date == date) && (eventGroup == null || it.eventGroupName == eventGroup)
+        }
     }
 
     fun editEvent(context: Context?, event: EventData) {

@@ -12,12 +12,12 @@ class FormViewModel: ViewModel() {
     val timeEnd = MutableLiveData<String>()
     val date = MutableLiveData<String>()
     val dateHint = MutableLiveData<String>()
+    val eventGroupName = MutableLiveData<String>()
+    val eventGroupImage = MutableLiveData<Int?>()
 
     fun currentDate(): String {
         val today = Calendar.getInstance().time
         val sdf = SimpleDateFormat("yyyy.MM.dd")
         return sdf.format(today)
     }
-
-
 }
