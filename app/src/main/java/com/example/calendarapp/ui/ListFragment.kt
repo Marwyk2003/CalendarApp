@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.calendarapp.R
 import com.example.calendarapp.databinding.FragmentListBinding
 import com.example.calendarapp.models.EventData
-import com.example.calendarapp.models.RvEvent
 import com.example.calendarapp.services.DataHandler
 import com.example.calendarapp.services.EventRvAdapter
 import com.example.calendarapp.viewmodels.EventViewModel
@@ -52,9 +51,11 @@ class ListFragment : Fragment() {
             "drawable",
             binding.root.context.packageName
         )
-        val eData = RvEvent.createEventsList(data).map { it -> it.eData }
-        events =
-            eData.map { it -> EventViewModel().apply { init(it) } } as ArrayList<EventViewModel>
+        events = data.map {
+            EventViewModel().apply {
+                eventData.value = it
+            }
+        } as ArrayList<EventViewModel>
         binding.listRvEvents.adapter = EventRvAdapter(events)
     }
 }

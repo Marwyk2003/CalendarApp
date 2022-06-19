@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.calendarapp.databinding.FragmentEventGroupBinding
+import com.example.calendarapp.models.EventGroupData
 import com.example.calendarapp.services.EventGroupRvAdapter
 import com.example.calendarapp.viewmodels.EventGroupViewModel
 
@@ -31,11 +32,16 @@ class EventGroupFragment : Fragment() {
 
     private fun initEventsList() {
         val events = ArrayList<EventGroupViewModel>().apply {
-            add(EventGroupViewModel().apply{init("languages", getResId("languages"))})
-            add(EventGroupViewModel().apply{init("programming", getResId("programming"))})
+            add(EventGroupViewModel().apply {
+                eventGroupData.value = EventGroupData("languages", getResId("languages"))
+            })
+            add(EventGroupViewModel().apply {
+                eventGroupData.value = EventGroupData("programming", getResId("programming"))
+            })
         }
         binding.rvEventGroup.adapter = EventGroupRvAdapter(events)
     }
 
-    private fun getResId(name: String) = this.resources.getIdentifier(name, "drawable", binding.root.context.packageName)
+    private fun getResId(name: String) =
+        this.resources.getIdentifier(name, "drawable", binding.root.context.packageName)
 }

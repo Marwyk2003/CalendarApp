@@ -18,11 +18,11 @@
         <ImageView
             android:layout_width="64dp"
             android:layout_height="64dp"
-            app:imageResource="@{viewmodel.image}" />
+            app:imageResource="@{viewmodel.eventGroupData.image}" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewmodel.name}" />
+            android:text="@{viewmodel.eventGroupData.name}" />
     </LinearLayout>
 </layout>

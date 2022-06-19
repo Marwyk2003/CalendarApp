@@ -34,8 +34,8 @@ class EventGroupRvAdapter(private val items: ArrayList<EventGroupViewModel>) :
             binding.root.setOnClickListener {
                 val activity = it.context as MainActivity
                 val data = EventGroupData(
-                    viewmodel.name.value ?: "",
-                    viewmodel.image.value
+                    viewmodel.eventGroupData.value?.name ?: "",
+                    viewmodel.eventGroupData.value?.image
                 )
                 val bundle = bundleOf("eventGroupData" to data)
                 activity.navigate(R.id.dayFragment, bundle)

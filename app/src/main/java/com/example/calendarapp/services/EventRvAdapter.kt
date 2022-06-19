@@ -34,20 +34,20 @@ class EventRvAdapter(private val items: ArrayList<EventViewModel>) :
             binding.sEventBtnRemove.setOnClickListener {
                 items.remove(viewmodel)
                 val dh = DataHandler()
-                dh.removeEvent(it.context, viewmodel.id.value ?: -1)
+                dh.removeEvent(it.context, viewmodel.eventData.value?.id ?: -1)
                 notifyDataSetChanged() // TODO
             }
             binding.root.setOnLongClickListener {
                 val activity = it.context as MainActivity
                 val data = EventData(
-                    viewmodel.id.value ?: -1,
-                    viewmodel.name.value ?: "",
-                    viewmodel.desc.value ?: "",
-                    viewmodel.startTime.value ?: "",
-                    viewmodel.endTime.value ?: "",
-                    viewmodel.date.value ?: "",
-                    viewmodel.eventGroupName.value ?: "",
-                    viewmodel.eventGroupImage.value
+                    viewmodel.eventData.value?.id ?: -1,
+                    viewmodel.eventData.value?.name ?: "",
+                    viewmodel.eventData.value?.desc ?: "",
+                    viewmodel.eventData.value?.startTime ?: "",
+                    viewmodel.eventData.value?.endTime ?: "",
+                    viewmodel.eventData.value?.date ?: "",
+                    viewmodel.eventData.value?.eventGroupName ?: "",
+                    viewmodel.eventData.value?.eventGroupImage
                 )
                 val bundle = bundleOf("eventData" to data)
                 activity.navigate(R.id.formFragment, bundle)
