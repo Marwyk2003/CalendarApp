@@ -7,9 +7,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.calendarapp.R
 import com.example.calendarapp.databinding.FragmentFormBinding
-import com.example.calendarapp.models.EventData
 import com.example.calendarapp.services.DataHandler
 import com.example.calendarapp.viewmodels.FormViewModel
+import java.lang.Error
 
 class FormFragment : Fragment() {
     private lateinit var binding: FragmentFormBinding
@@ -28,15 +28,7 @@ class FormFragment : Fragment() {
         model.dateHint.value = model.currentDate()
         val bundle = arguments ?: return
         val args = FormFragmentArgs.fromBundle(bundle)
-        val eventData = args.eventData
-
-        model.name.value = eventData?.name
-        model.desc.value = eventData?.desc
-        model.timeStart.value = eventData?.startTime
-        model.timeEnd.value = eventData?.endTime
-        model.date.value = eventData?.date
-        model.eventGroupName.value = eventData?.eventGroupName
-        model.eventGroupImage.value = eventData?.eventGroupImage
+        model.init(args.eventData)
     }
 
     override fun onCreateView(
@@ -70,21 +62,11 @@ class FormFragment : Fragment() {
         val eventId = args.eventData?.id
 
         val dh = DataHandler()
-        val id = eventId ?: (dh.lastId(context) + 1)
-        val ed = EventData(
-            id,
-            model.name.value ?: "",
-            model.desc.value ?: "",
-            model.timeStart.value ?: "",
-            model.timeEnd.value ?: "",
-            model.date.value ?: "",
-            model.eventGroupName.value ?: "",
-            model.eventGroupImage.value
-        )
-        if (eventId == null) {
-            dh.append(view.context, ed)
-        } else {
-            dh.editEvent(view.context, ed)
-        }
+        val id = eventId ?: (dh.lastId(context) + 1) // TODO
+        model.eventData.value?.id = id
+        model.setDate()
+        val ed = model.eventData.value ?: throw Error("cannot save")
+        if (eventId == null) dh.append(view.context, ed)
+        else dh.editEvent(view.context, ed)
     }
 }

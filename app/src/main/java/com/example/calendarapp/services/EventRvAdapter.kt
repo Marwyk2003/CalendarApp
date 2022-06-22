@@ -6,7 +6,6 @@ import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendarapp.R
 import com.example.calendarapp.databinding.RvEventBinding
-import com.example.calendarapp.models.EventData
 import com.example.calendarapp.ui.MainActivity
 import com.example.calendarapp.viewmodels.EventViewModel
 
@@ -39,16 +38,7 @@ class EventRvAdapter(private val items: ArrayList<EventViewModel>) :
             }
             binding.root.setOnLongClickListener {
                 val activity = it.context as MainActivity
-                val data = EventData(
-                    viewmodel.eventData.value?.id ?: -1,
-                    viewmodel.eventData.value?.name ?: "",
-                    viewmodel.eventData.value?.desc ?: "",
-                    viewmodel.eventData.value?.startTime ?: "",
-                    viewmodel.eventData.value?.endTime ?: "",
-                    viewmodel.eventData.value?.date ?: "",
-                    viewmodel.eventData.value?.eventGroupName ?: "",
-                    viewmodel.eventData.value?.eventGroupImage
-                )
+                val data = viewmodel.eventData.value
                 val bundle = bundleOf("eventData" to data)
                 activity.navigate(R.id.formFragment, bundle)
                 true

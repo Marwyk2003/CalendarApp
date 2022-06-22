@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/eventGroupFragment">
+    app:startDestination="@id/dayFragment">
 
     <fragment
         android:id="@+id/dayFragment"
@@ -20,7 +20,7 @@
         android:id="@+id/listFragment"
         android:name="com.example.calendarapp.ui.ListFragment"
         android:label="fragment_list"
-        tools:layout="@layout/fragment_list"/>
+        tools:layout="@layout/fragment_list" />
     <fragment
         android:id="@+id/formFragment"
         android:name="com.example.calendarapp.ui.FormFragment"
@@ -36,4 +36,8 @@
         android:id="@+id/eventGroupFragment"
         android:name="com.example.calendarapp.ui.EventGroupFragment"
         android:label="eventGroupFragment" />
+    <fragment
+        android:id="@+id/clockFragment"
+        android:name="com.example.calendarapp.ui.ClockFragment"
+        android:label="ClockFragment" />
 </navigation>

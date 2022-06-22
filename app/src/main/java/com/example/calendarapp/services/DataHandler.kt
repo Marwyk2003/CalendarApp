@@ -7,6 +7,8 @@ import com.google.gson.reflect.TypeToken
 import java.io.File
 import java.io.FileWriter
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.max
 
 class DataHandler {
@@ -73,9 +75,16 @@ class DataHandler {
         eventGroup: String? = null
     ): List<EventData> {
         val fullData = this.read(context)
-        return fullData.filter { it ->
-            (date == null || it.date == date) && (eventGroup == null || it.eventGroupName == eventGroup)
+
+        return fullData.filter { // TODO between start end end dates
+            (date == null || date2string(it.startDate) == date) && (eventGroup == null || it.eventGroupName == eventGroup)
         }
+    }
+
+    private fun date2string(date: Date?): String { // TODO
+        val sdf = SimpleDateFormat("yyyy.MM.dd")
+        if (date == null) return ""
+        return sdf.format(date)
     }
 
     fun editEvent(context: Context?, event: EventData) {

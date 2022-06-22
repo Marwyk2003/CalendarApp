@@ -18,8 +18,8 @@ class ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
     private lateinit var events: ArrayList<EventViewModel>
 
-    private var eventGroupName: String = "";
-    private var eventGroupImage: Int? = null;
+    private var eventGroupName: String = ""
+    private var eventGroupImage: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,10 @@ class ListFragment : Fragment() {
         binding.listRvEvents.layoutManager = LinearLayoutManager(container?.context)
         binding.listBtnNewEvent.setOnClickListener {
             val activity = it.context as MainActivity
-            val data = EventData(null, "", "", "", "", "", eventGroupName, eventGroupImage)
+            val data = EventData().apply {
+                eventGroupName = eventGroupName
+                eventGroupImage = eventGroupImage
+            }
             val bundle = bundleOf("eventData" to data)
             activity.navigate(R.id.formFragment, bundle)
         }
